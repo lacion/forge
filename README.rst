@@ -1,0 +1,36 @@
+======
+forge
+======
+
+.. image:: https://badge.fury.io/py/forge.png
+    :target: http://badge.fury.io/py/forge
+    
+.. image:: https://travis-ci.org/forge/forge.png?branch=master
+        :target: https://travis-ci.org/lacion/forge
+
+.. image:: https://pypip.in/d/forge/badge.png
+        :target: https://crate.io/packages/forge?version=latest
+
+
+forge is a command line tool that allows to execute modules to configure a linux system.
+
+Documentation
+-------------
+
+The full documentation is at http://forge.rtfd.org.
+
+Quickstart
+----------
+
+Install forge::
+
+    pip install forge
+
+Then use it::
+
+    $ forge -u username -p ModulesPath -m ModulesNames
+
+Features
+--------
+
+* TODO
