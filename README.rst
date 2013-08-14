@@ -2,8 +2,8 @@
 forge
 ======
 
-.. image:: https://badge.fury.io/py/forge.png
-    :target: http://badge.fury.io/py/forge
+.. image:: https://badge.fury.io/py/forge-cli.png
+    :target: http://badge.fury.io/py/forge-cli
     
 .. image:: https://api.travis-ci.org/lacion/forge.png?branch=develop
         :target: https://travis-ci.org/lacion/forge
