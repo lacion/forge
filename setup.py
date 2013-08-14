@@ -23,7 +23,7 @@ else:
     REQUIRES = []
 
 setup(
-    name='forge',
+    name='forge-cli',
     version=forge.__version__,
     description='forge is a command line tool that allows to execute modules to configure a linux system',
     long_description=readme + '\n\n' + history,

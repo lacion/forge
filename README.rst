@@ -17,14 +17,14 @@ forge is a command line tool that allows to execute modules to configure a linux
 Documentation
 -------------
 
-The full documentation is at http://forge.rtfd.org.
+The full documentation is at https://forge-cli.readthedocs.org.
 
 Quickstart
 ----------
 
 Install forge::
 
-    pip install forge
+    pip install forge-cli
 
 Then use it::
 
