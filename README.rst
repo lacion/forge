@@ -5,7 +5,7 @@ forge
 .. image:: https://badge.fury.io/py/forge.png
     :target: http://badge.fury.io/py/forge
     
-.. image:: https://travis-ci.org/forge/forge.png?branch=master
+.. image:: https://api.travis-ci.org/lacion/forge.png?branch=develop
         :target: https://travis-ci.org/lacion/forge
 
 .. image:: https://pypip.in/d/forge/badge.png
