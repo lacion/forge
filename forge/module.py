@@ -7,10 +7,11 @@ lminit.recipes.recipe
 """
 
 import os
+import sys
 import subprocess
 import shlex
 
-from cli import green, blue, cyan
+from cli import green, blue, cyan, red
 
 
 class Module(object):
@@ -27,6 +28,10 @@ class Module(object):
 
     def is_valid(self):
         raise NotImplementedError()
+
+    def requires_root(self):
+        if not os.geteuid()==0:
+            sys.exit(red("You need root to run this module"))
 
     def banner(self):
         """text progress separator"""

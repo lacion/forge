@@ -171,8 +171,8 @@ def run():
 
     parser = argparse.ArgumentParser(
         prog='forge',
-        description='this description was indented weird but that is okay',
-        epilog='r this epilog whose whitespace will be cleaned up and whose words will be wrapped across a couple lines'
+        description='forge is a command line tool that allows to execute modules to configure a linux system.',
+        epilog='this epilog whose whitespace will be cleaned up and whose words will be wrapped across a couple lines'
     )
 
     parser.add_argument('-u', '--user', help='Destination user', type=str, required=True)
