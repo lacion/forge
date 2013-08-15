@@ -11,6 +11,8 @@ import sys
 import subprocess
 import shlex
 
+import apt
+
 from cli import green, blue, cyan, red
 
 
@@ -26,11 +28,13 @@ class Module(object):
         self.home = os.path.expanduser('~' + user)
         assert os.path.exists(self.home)
 
+        self.cache = None
+
     def is_valid(self):
         raise NotImplementedError()
 
     def requires_root(self):
-        if not os.geteuid()==0:
+        if not os.geteuid() == 0:
             sys.exit(red("You need root to run this module"))
 
     def banner(self):
@@ -54,14 +58,54 @@ class Module(object):
     def is_success(self, command, as_root=True):
         return self.run(command, as_root) == 0
 
-    def install_package(self, name):
-        return self.run('apt-get install -y ' + name)
+    def __init_apt_cache(self):
+        """
+        Initialize the apt cache class
+        """
+        if not self.cache:
+            self.cache = apt.Cache()
+            self.apt_update()
 
-    def add_apt_repo(self, name):
-        return self.run('add-apt-repository -y ' + name + ' && apt-get update')
+    def apt_update(self):
+        """
+        updates apt cache
+        """
+        self.cache.update()
+        self.cache.open(None)
 
-    def remove_package(self, name):
-        return self.run('apt-get remove -y ' + name)
+    def upgrade(self):
+        """
+        upgrades system packages after performing apt-get update
+        """
+        self.__init_apt_cache()
+        self.apt_update()
+        self.cache.upgrade()
+
+    def install_package(self, package):
+        """
+        install a package via apt-get install
+        """
+
+        self.__init_apt_cache()
+        self.cache[package].mark_install()
+        self.cache.commit()
+
+    def remove_package(self, package):
+        """
+        removes a package via apt-get remove
+        """
+
+        self.__init_apt_cache()
+        self.cache[package].mark_delete()
+        self.cache.commit()
+
+    def add_apt_repo(self, ppa):
+        """
+        softwareproperties.SoftwareProperties seems to only be installed in the python3 packages so we use self.run
+        adds a ppa repo via add-apt-repository
+        """
+        self.run('add-apt-repository -y ' + ppa)
+        self.apt_update()
 
     def replace_text(self, filename, old, new, as_root=True):
         command = 'sed -i "s/%s/%s/" %s' % (old, new, filename)
