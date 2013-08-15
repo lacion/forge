@@ -24,6 +24,9 @@ class Module(object):
     temp = '/tmp'
 
     def __init__(self, user):
+        """
+        Constructor
+        """
         self.user = user
         self.home = os.path.expanduser('~' + user)
         assert os.path.exists(self.home)
@@ -31,23 +34,42 @@ class Module(object):
         self.cache = None
 
     def is_valid(self):
+        """
+        ToDo: this may be removed
+        """
         raise NotImplementedError()
 
-    def requires_root(self):
+    @staticmethod
+    def requires_root():
+        """
+        check if running user is root
+        """
         if not os.geteuid() == 0:
             sys.exit(red("You need root to run this module"))
 
-    def banner(self):
+    @staticmethod
+    def banner():
         """text progress separator"""
         print cyan('****************************************************************')
 
-    def message(self, string):
+    @staticmethod
+    def message(string):
+        """
+        ToDo: this may change
+        """
         print blue('- ' + string)
 
-    def progress(self, string):
+    @staticmethod
+    def progress(string):
+        """
+        ToDo: this may change
+        """
         print green('\t* ' + string)
 
     def run(self, command, as_root=True):
+        """
+        execute a lnix command
+        """
         fnull = open(os.devnull, 'w')
         parts = shlex.split(command)
         args = parts if as_root else ['sudo', '-u', self.user] + parts
@@ -56,6 +78,9 @@ class Module(object):
         return result
 
     def is_success(self, command, as_root=True):
+        """
+        ToDo: this may change
+        """
         return self.run(command, as_root) == 0
 
     def __init_apt_cache(self):
@@ -108,18 +133,31 @@ class Module(object):
         self.apt_update()
 
     def replace_text(self, filename, old, new, as_root=True):
+        """
+        ToDo: this may change
+        """
         command = 'sed -i "s/%s/%s/" %s' % (old, new, filename)
         self.run(command, as_root)
 
-    def append_text(self, filename, text=''):
+    @staticmethod
+    def append_text(filename, text=''):
+        """
+        ToDo: this may change
+        """
         with open(filename, "a") as _file:
             _file.write(text + '\n')
 
     def wget(self, url, as_root=True):
+        """
+        ToDo: this may change
+        """
         command = "wget -q --no-check-certificate " + url
         return self.run(command, as_root)
 
     def is_ok(self, string):
+        """
+        ToDo: this may change
+        """
         result = raw_input(string + '? [y/n]\n').strip().lower()
         if result == 'y':
             return True
@@ -134,4 +172,7 @@ class Module(object):
         raise NotImplementedError()
 
     def __repr__(self):
+        """
+        class string representation
+        """
         return '%s: user=%r, home=%r' % (self.__class__.__name__, self.user, self.home)
