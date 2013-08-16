@@ -4,5 +4,5 @@ Usage
 
 To use forge::
 
-	$ $ forge -u username -p ModulesPath -m ModulesNames
+	$ forge -u username -p ModulesPath -m ModulesNames
 

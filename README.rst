@@ -1,5 +1,5 @@
 ======
-forge
+Forge
 ======
 
 .. image:: https://badge.fury.io/py/forge-cli.png
@@ -32,5 +32,11 @@ Then use it::
 
 Features
 --------
+ToDo
 
-* TODO
+Future
+------
+* Write more documentation
+* Add tests
+* Better way to handle messages
+* Config files templates

@@ -95,6 +95,7 @@ class Module(object):
         """
         updates apt cache
         """
+        self.__init_apt_cache()
         self.cache.update()
         self.cache.open(None)
 

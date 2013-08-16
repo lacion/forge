@@ -17,6 +17,8 @@ Contents:
    contributing
    authors
    history
+   modules
+   notice
 
 Indices and tables
 ==================
