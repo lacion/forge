@@ -10,4 +10,10 @@ Development Lead
 Contributors
 ------------
 
-None yet. Why not be the first?
+
+Embedded Thanks
+---------------
+
+* BrightcoveOS/Diamond as the module loader is heavily based on the way the handle collectors
+* kennethreitz/clint for this great utility
+* Jonathan Hartley for colorama

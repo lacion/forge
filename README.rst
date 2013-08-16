@@ -1,5 +1,5 @@
 ======
-forge
+Forge
 ======
 
 .. image:: https://badge.fury.io/py/forge-cli.png
@@ -8,8 +8,8 @@ forge
 .. image:: https://api.travis-ci.org/lacion/forge.png?branch=develop
         :target: https://travis-ci.org/lacion/forge
 
-.. image:: https://pypip.in/d/forge/badge.png
-        :target: https://crate.io/packages/forge?version=latest
+.. image:: https://pypip.in/d/forge-cli/badge.png
+        :target: https://crate.io/packages/forge-cli?version=latest
 
 
 forge is a command line tool that allows to execute modules to configure a linux system.
@@ -32,5 +32,11 @@ Then use it::
 
 Features
 --------
+ToDo
 
-* TODO
+Future
+------
+* Write more documentation
+* Add tests
+* Better way to handle messages
+* Config files templates

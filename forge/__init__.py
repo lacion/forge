@@ -1,8 +1,8 @@
 """
-lminit
+forge
 ~~~~~
 
 :copyright: (c) 2010-2013 by Luis Morales
-:licen
+:license: BSD, see LICENSE for more details.
 """
-__version__ = '0.1'
+__version__ = '0.2.dev'

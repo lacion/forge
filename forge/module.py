@@ -7,10 +7,13 @@ lminit.recipes.recipe
 """
 
 import os
+import sys
 import subprocess
 import shlex
 
-from cli import green, blue, cyan
+import apt
+
+from cli import green, blue, cyan, red
 
 
 class Module(object):
@@ -21,24 +24,52 @@ class Module(object):
     temp = '/tmp'
 
     def __init__(self, user):
+        """
+        Constructor
+        """
         self.user = user
         self.home = os.path.expanduser('~' + user)
         assert os.path.exists(self.home)
 
+        self.cache = None
+
     def is_valid(self):
+        """
+        ToDo: this may be removed
+        """
         raise NotImplementedError()
 
-    def banner(self):
+    @staticmethod
+    def requires_root():
+        """
+        check if running user is root
+        """
+        if not os.geteuid() == 0:
+            sys.exit(red("You need root to run this module"))
+
+    @staticmethod
+    def banner():
         """text progress separator"""
         print cyan('****************************************************************')
 
-    def message(self, string):
+    @staticmethod
+    def message(string):
+        """
+        ToDo: this may change
+        """
         print blue('- ' + string)
 
-    def progress(self, string):
+    @staticmethod
+    def progress(string):
+        """
+        ToDo: this may change
+        """
         print green('\t* ' + string)
 
     def run(self, command, as_root=True):
+        """
+        execute a lnix command
+        """
         fnull = open(os.devnull, 'w')
         parts = shlex.split(command)
         args = parts if as_root else ['sudo', '-u', self.user] + parts
@@ -47,30 +78,87 @@ class Module(object):
         return result
 
     def is_success(self, command, as_root=True):
+        """
+        ToDo: this may change
+        """
         return self.run(command, as_root) == 0
 
-    def install_package(self, name):
-        return self.run('apt-get install -y ' + name)
+    def __init_apt_cache(self):
+        """
+        Initialize the apt cache class
+        """
+        if not self.cache:
+            self.cache = apt.Cache()
+            self.apt_update()
 
-    def add_apt_repo(self, name):
-        return self.run('add-apt-repository -y ' + name + ' && apt-get update')
+    def apt_update(self):
+        """
+        updates apt cache
+        """
+        self.__init_apt_cache()
+        self.cache.update()
+        self.cache.open(None)
 
-    def remove_package(self, name):
-        return self.run('apt-get remove -y ' + name)
+    def upgrade(self):
+        """
+        upgrades system packages after performing apt-get update
+        """
+        self.__init_apt_cache()
+        self.apt_update()
+        self.cache.upgrade()
+
+    def install_package(self, package):
+        """
+        install a package via apt-get install
+        """
+
+        self.__init_apt_cache()
+        self.cache[package].mark_install()
+        self.cache.commit()
+
+    def remove_package(self, package):
+        """
+        removes a package via apt-get remove
+        """
+
+        self.__init_apt_cache()
+        self.cache[package].mark_delete()
+        self.cache.commit()
+
+    def add_apt_repo(self, ppa):
+        """
+        softwareproperties.SoftwareProperties seems to only be installed in the python3 packages so we use self.run
+        adds a ppa repo via add-apt-repository
+        """
+        self.run('add-apt-repository -y ' + ppa)
+        self.apt_update()
 
     def replace_text(self, filename, old, new, as_root=True):
+        """
+        ToDo: this may change
+        """
         command = 'sed -i "s/%s/%s/" %s' % (old, new, filename)
         self.run(command, as_root)
 
-    def append_text(self, filename, text=''):
+    @staticmethod
+    def append_text(filename, text=''):
+        """
+        ToDo: this may change
+        """
         with open(filename, "a") as _file:
             _file.write(text + '\n')
 
     def wget(self, url, as_root=True):
+        """
+        ToDo: this may change
+        """
         command = "wget -q --no-check-certificate " + url
         return self.run(command, as_root)
 
     def is_ok(self, string):
+        """
+        ToDo: this may change
+        """
         result = raw_input(string + '? [y/n]\n').strip().lower()
         if result == 'y':
             return True
@@ -85,4 +173,7 @@ class Module(object):
         raise NotImplementedError()
 
     def __repr__(self):
+        """
+        class string representation
+        """
         return '%s: user=%r, home=%r' % (self.__class__.__name__, self.user, self.home)
